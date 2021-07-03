@@ -53,7 +53,16 @@ bindsym $mod+Ctrl+m exec pavucontrol
 
 # Screen brightness controls
 # bindsym XF86MonBrightnessUp exec "xbacklight -inc 10; notify-send 'brightness up'"
+bindsym Ctrl+Right exec "xbacklight -inc 10"
 # bindsym XF86MonBrightnessDown exec "xbacklight -dec 10; notify-send 'brightness down'"
+bindsym Ctrl+Left exec "xbacklight -dec 10"
+
+# Volume Control
+bindsym Ctrl+Up exec "pactl set-sink-volume @DEFAULT_SINK@ +3000"
+bindsym Ctrl+Down exec "pactl set-sink-volume @DEFAULT_SINK@ -3000"
+bindsym Ctrl+F8 exec "pactl set-sink-mute @DEFAULT_SINK@ toggle"
+
+################################################################################################
 
 # Start Applications
 bindsym $mod+1 exec urxvt -e ranger
@@ -68,11 +77,9 @@ bindsym $mod+4 exec thunderbird
 bindsym $mod+5 exec pamac-manager
 bindsym $mod+6 exec gimp
 bindsym $mod+7 exec inkscape
-bindsym $mod+8 exec tor
-bindsym $mod+9 exec terminal -e 'vim'
-
-
-
+bindsym $mod+8 exec torbrowser-launcher %u
+bindsym $mod+9 exec terminal gksu -e 'vim'
+bindsym $mod+Shift+9 exec /usr/local/bin/pentablet/pentablet
 
 bindsym $mod+Ctrl+b exec terminal -e 'bmenu'
 
@@ -169,6 +176,10 @@ set $ws5 5
 set $ws6 6
 set $ws7 7
 set $ws8 8
+set $ws9 9
+set $ws10 10
+set $ws11 11
+set $ws12 12
 
 # switch to workspace
 bindsym $mod+F1 workspace $ws1
@@ -179,6 +190,10 @@ bindsym $mod+F5 workspace $ws5
 bindsym $mod+F6 workspace $ws6
 bindsym $mod+F7 workspace $ws7
 bindsym $mod+F8 workspace $ws8
+bindsym $mod+F9 workspace $ws9
+bindsym $mod+F10 workspace $ws10
+bindsym $mod+F11 workspace $ws11
+bindsym $mod+F12 workspace $ws12
 
 # Move focused container to workspace
 bindsym $mod+Ctrl+F1 move container to workspace $ws1
@@ -189,6 +204,10 @@ bindsym $mod+Ctrl+F5 move container to workspace $ws5
 bindsym $mod+Ctrl+F6 move container to workspace $ws6
 bindsym $mod+Ctrl+F7 move container to workspace $ws7
 bindsym $mod+Ctrl+F8 move container to workspace $ws8
+bindsym $mod+Ctrl+F9 move container to workspace $ws9
+bindsym $mod+Ctrl+F10 move container to workspace $ws10
+bindsym $mod+Ctrl+F11 move container to workspace $ws11
+bindsym $mod+Ctrl+F12 move container to workspace $ws12
 
 # Move to workspace with focused container
 bindsym $mod+Shift+F1 move container to workspace $ws1; workspace $ws1
@@ -199,14 +218,18 @@ bindsym $mod+Shift+F5 move container to workspace $ws5; workspace $ws5
 bindsym $mod+Shift+F6 move container to workspace $ws6; workspace $ws6
 bindsym $mod+Shift+F7 move container to workspace $ws7; workspace $ws7
 bindsym $mod+Shift+F8 move container to workspace $ws8; workspace $ws8
+bindsym $mod+Shift+F9 move container to workspace $ws9; workspace $ws9
+bindsym $mod+Shift+F10 move container to workspace $ws10; workspace $ws10
+bindsym $mod+Shift+F11 move container to workspace $ws11; workspace $ws11
+bindsym $mod+Shift+F12 move container to workspace $ws12; workspace $ws12
 
 # Open applications on specific workspaces
-# assign [class="Pentablet_Driver"] $ws8
+# assign [class="pentablet"] $ws8
 # assign [class="firefoxdeveloperedition"] $ws2
 # assign [class="URxvt"] $ws3
 # assign [class="Gimp"] $ws6
 # assign [class="Ld-linux-x86-64.so.2"] $ws7
-# assign [class="Torlauncher"] $ws8
+# assign [class="Tor Browser"] $ws8
 # assign [class="Pale moon"] $ws2
 # assign [class="Skype"] $ws5
 
@@ -312,10 +335,12 @@ exec --no-startup-id start_conky_green
 exec_always --no-startup-id ff-theme-util
 exec_always --no-startup-id fix_xcursor
 
-exec_always --no-startup-id i3-battery-popup -N -L 20 -l 10
+exec_always --no-startup-id i3-battery-popup -N -L 30
 # exec_always --no-startup-id firefox-developer-edition
-# exec_always --no-startup-id ~/Desktop/xp-pen/pentablet.sh
+# exec_always --no-startup-id sh /usr/local/bin/pentablet/pentablet
+
 exec --no-startup-id numlockx
+
 
 # Color palette used for the terminal ( ~/.Xresources file )
 # Colors are gathered based on the documentation:
@@ -351,8 +376,8 @@ set_from_resource $term_color15    color15
 # Start i3bar to display a workspace bar (plus the system information i3status if available)
 bar {
 	i3bar_command i3bar
-	status_command i3status
-	position top
+  status_command i3status 
+  position top
 
 ## please set your primary output first. Example: 'xrandr --output eDP1 --primary'
 #	tray_output primary
